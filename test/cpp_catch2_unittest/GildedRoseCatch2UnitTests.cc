@@ -93,7 +93,7 @@ TEST_CASE("\"Sulfuras\", being a legendary item, never has to be sold or decreas
     REQUIRE(42 == item.quality);
 }
 
-TEST_CASE("\"Backstage passes\", like aged brie, increases in Quality as its SellIn value approaches;")
+TEST_CASE("\"Backstage passes\", like aged brie, increases in Quality as its SellIn value approaches")
 {
     vector<Item> items;
     items.emplace_back("Backstage passes to a TAFKAL80ETC concert", 15, 42);
@@ -107,4 +107,26 @@ TEST_CASE("\"Backstage passes\", like aged brie, increases in Quality as its Sel
     app.updateQuality();
     REQUIRE(13 == item.sellIn);
     REQUIRE(44 == item.quality);
+}
+
+TEST_CASE("Backstage passes: Quality increases by 2 when there are 10 days or less and by 3 when there are 5 days or less")
+{
+    vector<Item> items;
+    items.emplace_back("Backstage passes to a TAFKAL80ETC concert", 10, 21);
+    GildedRose app(items);
+
+    Item &item = app.items[0];
+    app.updateQuality();
+    REQUIRE(9 == item.sellIn);
+    REQUIRE(23 == item.quality);
+
+    app.updateQuality();
+    app.updateQuality();
+    app.updateQuality();
+    app.updateQuality();
+    REQUIRE(5 == item.sellIn);
+    REQUIRE(31 == item.quality);
+    app.updateQuality();
+    REQUIRE(4 == item.sellIn);
+    REQUIRE(34 == item.quality);
 }
