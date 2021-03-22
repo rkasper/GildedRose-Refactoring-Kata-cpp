@@ -76,3 +76,19 @@ TEST_CASE("The Quality of an item is never more than 50")
     app.updateQuality();
     REQUIRE(50 == item.quality);
 }
+
+TEST_CASE("\"Sulfuras\", being a legendary item, never has to be sold or decreases in Quality")
+{
+    vector<Item> items;
+    items.emplace_back("Sulfuras, Hand of Ragnaros", 15, 42);
+    GildedRose app(items);
+
+    Item &item = app.items[0];
+    app.updateQuality();
+    REQUIRE(15 == item.sellIn);
+    REQUIRE(42 == item.quality);
+
+    app.updateQuality();
+    REQUIRE(15 == item.sellIn);
+    REQUIRE(42 == item.quality);
+}
