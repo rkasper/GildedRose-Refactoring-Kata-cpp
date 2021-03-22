@@ -92,3 +92,19 @@ TEST_CASE("\"Sulfuras\", being a legendary item, never has to be sold or decreas
     REQUIRE(15 == item.sellIn);
     REQUIRE(42 == item.quality);
 }
+
+TEST_CASE("\"Backstage passes\", like aged brie, increases in Quality as its SellIn value approaches;")
+{
+    vector<Item> items;
+    items.emplace_back("Backstage passes to a TAFKAL80ETC concert", 15, 42);
+    GildedRose app(items);
+
+    Item &item = app.items[0];
+    app.updateQuality();
+    REQUIRE(14 == item.sellIn);
+    REQUIRE(43 == item.quality);
+
+    app.updateQuality();
+    REQUIRE(13 == item.sellIn);
+    REQUIRE(44 == item.quality);
+}
