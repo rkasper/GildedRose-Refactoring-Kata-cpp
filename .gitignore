@@ -109,3 +109,6 @@ fabric.properties
 
 # VCS
 .idea/vcs.xml
+
+# Code coverage tool
+default.profraw
