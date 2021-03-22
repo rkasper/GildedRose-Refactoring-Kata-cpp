@@ -130,3 +130,15 @@ TEST_CASE("Backstage passes: Quality increases by 2 when there are 10 days or le
     REQUIRE(4 == item.sellIn);
     REQUIRE(34 == item.quality);
 }
+
+TEST_CASE("Backstage passes: Quality drops to 0 after the concert")
+{
+    vector<Item> items;
+    items.emplace_back("Backstage passes to a TAFKAL80ETC concert", 0, 42);
+    GildedRose app(items);
+
+    Item &item = app.items[0];
+    app.updateQuality();
+    REQUIRE(-1 == item.sellIn);
+    REQUIRE(0 == item.quality);
+}
