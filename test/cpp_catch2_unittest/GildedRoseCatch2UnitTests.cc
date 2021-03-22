@@ -20,3 +20,18 @@ TEST_CASE("At the end of each day our system lowers both values (sellin and qual
     REQUIRE(5 == item1.sellIn);
     REQUIRE(6 == item1.quality);
 }
+
+TEST_CASE("Once the sell by date has passed, Quality degrades twice as fast")
+{
+    vector<Item> items;
+    items.emplace_back("Foo", -1, 42);
+    GildedRose app(items);
+
+    app.updateQuality();
+    Item &item = app.items[0];
+    REQUIRE(40 == item.quality);
+
+    app.updateQuality();
+    item = app.items[0];
+    REQUIRE(38 == item.quality);
+}
