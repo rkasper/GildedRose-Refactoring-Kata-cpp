@@ -62,3 +62,17 @@ TEST_CASE("\"Aged Brie\" actually increases in Quality the older it gets")
     app.updateQuality();
     REQUIRE(44 == item.quality);
 }
+
+TEST_CASE("The Quality of an item is never more than 50")
+{
+    vector<Item> items;
+    items.emplace_back("Aged Brie", 15, 50);
+    GildedRose app(items);
+
+    Item &item = app.items[0];
+    app.updateQuality();
+    REQUIRE(50 == item.quality);
+
+    app.updateQuality();
+    REQUIRE(50 == item.quality);
+}
