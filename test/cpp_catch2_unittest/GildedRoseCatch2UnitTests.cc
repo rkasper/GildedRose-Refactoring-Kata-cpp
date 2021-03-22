@@ -142,3 +142,15 @@ TEST_CASE("Backstage passes: Quality drops to 0 after the concert")
     REQUIRE(-1 == item.sellIn);
     REQUIRE(0 == item.quality);
 }
+
+TEST_CASE("Aged Brie, sellin < 0, quality < 50")
+{
+    vector<Item> items;
+    items.emplace_back("Aged Brie", -1, 42);
+    GildedRose app(items);
+
+    Item &item = app.items[0];
+    app.updateQuality();
+    REQUIRE(-2 == item.sellIn);
+    REQUIRE(44 == item.quality);
+}
