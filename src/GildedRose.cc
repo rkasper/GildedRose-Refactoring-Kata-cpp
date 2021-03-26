@@ -13,10 +13,11 @@ void GildedRose::updateItem(Item &item) {
     updateIfBackstagePasses(item);
     updateIfSulfuras(item);
     updateIfNormalItem(item);
+    updateIfConjured(item);
 }
 
 void GildedRose::updateIfNormalItem(Item &item) {
-    if (item.name != backstagePasses && item.name != agedBrie && item.name != sulfuras) {
+    if (isNormalItem(item)) {
         item.sellIn--;
         if (item.sellIn < 0) {
                 item.quality -= 2;
@@ -24,11 +25,17 @@ void GildedRose::updateIfNormalItem(Item &item) {
             item.quality--;
         }
 
-        if (item.quality < 0) {
-            item.quality = 0;
-        }
+        ensureMinimumQuality(item);
     }
 }
+
+void GildedRose::ensureMinimumQuality(Item &item) {
+    if (item.quality < 0) {
+        item.quality = 0;
+    }
+}
+
+bool GildedRose::isNormalItem(const Item &item) { return item.name != backstagePasses && item.name != agedBrie && item.name != sulfuras && item.name != conjured; }
 
 void GildedRose::updateIfSulfuras(const Item &item) { if (item.name == sulfuras) {}}
 
@@ -51,12 +58,6 @@ void GildedRose::updateIfBackstagePasses(Item &item) {
     }
 }
 
-void GildedRose::ensureMaximumQuality(Item &item) {
-    if (item.quality > maximumQuality) {
-        item.quality = maximumQuality;
-    }
-}
-
 void GildedRose::updateIfAgedBrie(Item &item) {
     if (item.name == agedBrie) {
         item.sellIn--;
@@ -66,5 +67,19 @@ void GildedRose::updateIfAgedBrie(Item &item) {
             item.quality ++;
         }
         ensureMaximumQuality(item);
+    }
+}
+
+void GildedRose::updateIfConjured(Item &item) {
+    if (item.name == conjured) {
+        item.sellIn--;
+        item.quality -= 2;
+    }
+    ensureMinimumQuality(item);
+}
+
+void GildedRose::ensureMaximumQuality(Item &item) {
+    if (item.quality > maximumQuality) {
+        item.quality = maximumQuality;
     }
 }

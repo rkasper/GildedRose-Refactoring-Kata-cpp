@@ -154,3 +154,23 @@ TEST_CASE("Aged Brie, sellin < 0, quality < 50")
     REQUIRE(-2 == item.sellIn);
     REQUIRE(44 == item.quality);
 }
+
+TEST_CASE("\"Conjured\" items degrade in Quality twice as fast as normal items")
+{
+    vector<Item> items;
+    items.emplace_back("Conjured", 1, 4);
+    GildedRose app(items);
+
+    Item &item = app.items[0];
+    app.updateQuality();
+    REQUIRE(0 == item.sellIn);
+    REQUIRE(2 == item.quality);
+
+    app.updateQuality();
+    REQUIRE(-1 == item.sellIn);
+    REQUIRE(0 == item.quality);
+
+    app.updateQuality();
+    REQUIRE(-2 == item.sellIn);
+    REQUIRE(0 == item.quality);
+}

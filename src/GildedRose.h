@@ -4,6 +4,7 @@
 static const char *const agedBrie = "Aged Brie";
 static const char *const backstagePasses = "Backstage passes to a TAFKAL80ETC concert";
 static const char *const sulfuras = "Sulfuras, Hand of Ragnaros";
+static const char *const conjured = "Conjured";
 
 static const int reallyCloseToConcertDate = 6;
 static const int closeToConcertDate = 11;
@@ -34,6 +35,9 @@ private:
     static void updateIfBackstagePasses(Item &item) ;
     static void updateIfSulfuras(const Item &item) ;
     static void updateIfNormalItem(Item &item) ;
+    static void updateIfConjured(Item &item);
     static void ensureMaximumQuality(Item &item) ;
+    static bool isNormalItem(const Item &item);
+    static void ensureMinimumQuality(Item &item);
 };
 
