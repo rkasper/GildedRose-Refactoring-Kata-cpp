@@ -61,6 +61,16 @@ TEST_CASE("\"Aged Brie\" actually increases in Quality the older it gets")
 
     app.updateQuality();
     REQUIRE(44 == item.quality);
+
+    // Branch coverage
+    vector<Item> items2;
+    items2.emplace_back("Aged Brie", -1, 50);
+    GildedRose app2(items2);
+
+    Item &item2 = app2.items[0];
+    app2.updateQuality();
+    REQUIRE(-2 == item2.sellIn);
+    REQUIRE(50 == item2.quality);
 }
 
 TEST_CASE("The Quality of an item is never more than 50")
@@ -91,6 +101,16 @@ TEST_CASE("\"Sulfuras\", being a legendary item, never has to be sold or decreas
     app.updateQuality();
     REQUIRE(15 == item.sellIn);
     REQUIRE(42 == item.quality);
+
+    // Branch coverage
+    vector<Item> items2;
+    items2.emplace_back("Sulfuras, Hand of Ragnaros", -1, 42);
+    GildedRose app2(items2);
+
+    Item &item2 = app2.items[0];
+    app2.updateQuality();
+    REQUIRE(-1 == item2.sellIn);
+    REQUIRE(42 == item2.quality);
 }
 
 TEST_CASE("\"Backstage passes\", like aged brie, increases in Quality as its SellIn value approaches")
@@ -129,6 +149,24 @@ TEST_CASE("Backstage passes: Quality increases by 2 when there are 10 days or le
     app.updateQuality();
     REQUIRE(4 == item.sellIn);
     REQUIRE(34 == item.quality);
+
+    // Branch coverage
+    vector<Item> items2;
+    items2.emplace_back("Backstage passes to a TAFKAL80ETC concert", 10, 49);
+    GildedRose app2(items2);
+    Item &item2 = app2.items[0];
+    app2.updateQuality();
+    REQUIRE(9 == item2.sellIn);
+    REQUIRE(50 == item2.quality);
+
+    // Branch coverage
+    vector<Item> items3;
+    items3.emplace_back("Backstage passes to a TAFKAL80ETC concert", 5, 48);
+    GildedRose app3(items3);
+    Item &item3 = app3.items[0];
+    app3.updateQuality();
+    REQUIRE(4 == item3.sellIn);
+    REQUIRE(50 == item3.quality);
 }
 
 TEST_CASE("Backstage passes: Quality drops to 0 after the concert")
